@@ -1,0 +1,6 @@
+payment:
+    authorized: Payment successful!
+    confirmed:  Payment failed. <b>Please try again.</b>
+    rejected:  Payment is being processed.
+    refunded: Payment was cancelled.
+    extended: Successful payment renewal.

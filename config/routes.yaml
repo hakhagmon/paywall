@@ -1,0 +1,9 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+callback_payment:
+    path: /callback/payment/{type}
+    controller: App\Controller\PaymentCallbackController::handle
+    methods: POST
