@@ -9,7 +9,7 @@ class TelegramService
     // бот https://t.me/myAiMPbot
 
 
-    public static function sendMessage(string $chatId, string $message): array
+    public static function sendMessage(int $chatId, string $message): array
     {
         // Реализация отправки в Telegram
         $url = 'https://api.telegram.org/bot' .self::$botToken . '/sendMessage';

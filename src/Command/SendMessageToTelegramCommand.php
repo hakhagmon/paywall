@@ -96,11 +96,11 @@ class SendMessageToTelegramCommand extends Command
 
 
     /**
-     * @param string $userId
+     * @param int $userId
      * @param string $message
      * @return int
      */
-    private function sendToTelegram(string $userId, string $message): int
+    private function sendToTelegram(int $userId, string $message): int
     {
         sleep(1);
         $result = TelegramService::sendMessage($userId, $message);
