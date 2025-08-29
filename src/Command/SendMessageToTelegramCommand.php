@@ -1,5 +1,5 @@
 <?php
-// src/Command/SendMessageToTelegramCommand.php
+declare(strict_types=1);
 
 namespace App\Command;
 
@@ -41,7 +41,7 @@ class SendMessageToTelegramCommand extends Command
      */
     public function updateStatus(int $status, TelegramMessageQueue $message): void
     {
-        $message->setStatus($status); // Успешно отправлено
+        $message->setStatus($status);
         $message->setSendedAt($status === 1 ? new DateTimeImmutable() : null);
         $this->entityManager->persist($message);
         $this->entityManager->flush();
@@ -61,7 +61,7 @@ class SendMessageToTelegramCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        //todo тут нужен "симофор" для проверки, что сейчас процесс не запущен, чтоб избежать дубле отправки
+        //todo тут нужен "симофор" для проверки, что сейчас процесс не запущен, чтоб избежать дублей отправки
         $this->io = new SymfonyStyle($input, $output);
         $limit = (int)$input->getOption('limit');
 
@@ -109,7 +109,7 @@ class SendMessageToTelegramCommand extends Command
             return self::STATUS_DONE;
         }
 
-        if (in_array($result['error'], [Response::HTTP_TOO_MANY_REQUESTS, Response::HTTP_INTERNAL_SERVER_ERROR])) { //todo вынести в константы
+        if (in_array($result['error'], [Response::HTTP_TOO_MANY_REQUESTS, Response::HTTP_INTERNAL_SERVER_ERROR])) {
             $this->io->warning('Ошибка, останавливаем процесс');
             die();
         }

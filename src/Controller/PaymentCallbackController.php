@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Payment\Const\PaymentStatus;
 use App\Payment\Const\PaymentType;
 use App\Payment\Dto\PaymentDataDTO;
+use App\Payment\Exceptions\ValidateException;
 use App\Payment\Handler\AlfabankHandler;
 use App\Payment\Handler\PaymentHandlerInterface;
 use App\Payment\Handler\SberbankHandler;
@@ -48,6 +49,11 @@ class PaymentCallbackController extends AbstractController
             $this->save($payment->getPaymentDTO());
 
             return $this->json(['status' => 'ok'])->setStatusCode(Response::HTTP_OK);
+        } catch (ValidateException $e) {
+            return $this->json([
+                'error' => 'Error validation',
+                'data' => $e->getErrors(),
+            ])->setStatusCode(Response::HTTP_BAD_REQUEST);
         } catch (Exception $e) {
             return $this->json([
                 'error' => 'Internal server error',

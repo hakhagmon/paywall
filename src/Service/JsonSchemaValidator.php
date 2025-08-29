@@ -2,25 +2,38 @@
 
 namespace App\Service;
 
+use App\Payment\Exceptions\ValidateException;
 use JsonSchema\Validator;
 use JsonSchema\Constraints\Constraint;
 use PHPUnit\Framework\Exception;
 
 class JsonSchemaValidator
 {
-    public function validate(array $data, string $schema): true
+    /**
+     * @param string $data
+     * @param string $jsonSchema
+     * @return void
+     * @throws ValidateException
+     */
+    public function validate(string $data, string $jsonSchema): void
     {
-        $validator = new Validator();
+        $jsonSchema = json_decode($jsonSchema);
+        $data = json_decode($data);
 
-        $schema = (object)json_decode($schema, true);
+        $validator = new Validator;
+        $validator->validate($data, $jsonSchema);
 
-        $validator->validate($data, $schema, Constraint::CHECK_MODE_VALIDATE_SCHEMA);
+        if (!$validator->isValid()) {
+            $validateErrorData = [];
+            foreach ($validator->getErrors() as $error) {
+                $validateErrorData[] = [
+                    'code' => 'error_input_data',
+                    'text' => sprintf("[%s] %s\n", $error['property'], $error['message'])
+                ];
+            }
 
-        if ($validator->isValid()) {
-            return true;
+            throw new ValidateException($validateErrorData);
         }
-
-        return throw new Exception('payment type not found', json_encode($validator->getErrors()));
 
     }
 }

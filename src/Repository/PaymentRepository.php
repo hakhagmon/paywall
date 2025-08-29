@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Payment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,7 +44,7 @@ class PaymentRepository extends ServiceEntityRepository
     //    }
     public function countByUserIdAndStatus(string $userId, string $status): int
     {
-        return (int) $this->createQueryBuilder('p')
+        return (int)$this->createQueryBuilder('p')
             ->select('COUNT(p.id)')
             ->where('p.serId = :userId')
             ->andWhere('p.status = :status')
