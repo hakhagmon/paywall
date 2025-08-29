@@ -61,7 +61,7 @@ class SendMessageToTelegramCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        //todo тут нужен "симофор" для проверки, что сейчас процесс не запуще, чтоб избежать дубле отправки
+        //todo тут нужен "симофор" для проверки, что сейчас процесс не запущен, чтоб избежать дубле отправки
         $this->io = new SymfonyStyle($input, $output);
         $limit = (int)$input->getOption('limit');
 
